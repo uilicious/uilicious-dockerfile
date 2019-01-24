@@ -23,6 +23,7 @@ WORKDIR /appspace/
 
 #
 # Standard entrypoint script setup
+# Script contents : https://github.com/uilicious/uilicious-dockerfile/blob/master/base/alpine-base/entrypoint-base.sh
 #
 COPY entrypoint-base.sh /entrypoint/base.sh
 RUN chmod 555 /entrypoint/base.sh
