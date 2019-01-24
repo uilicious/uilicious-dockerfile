@@ -3,7 +3,7 @@
 https://hub.docker.com/r/uilicious/alpine-nodejs/
 https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-nodejs
 
-Base alpine container (With node 8 preinstalled), normalised to conform to our requirements 
+Base alpine container (with node 8 preinstalled), normalised to conform to our requirements 
 as outlined inside the [base/README](https://github.com/uilicious/uilicious-dockerfile/tree/master/base).
 
 ## Standard environment variables
