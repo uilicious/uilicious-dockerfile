@@ -106,3 +106,18 @@ This is setup in accordance to: https://nodejs.org/en/download/package-manager/
 
 Runs the following in primer (if not blank) : 
 `eval("$APTGET_PRESCRIPT")`
+
+---
+
+# Standard restricted user : appuser
+
+Finally a restricted user/group has been predefined with user/groupid of 1000
+
+By default, container access is not restricted to this user (such configuration will be container specific)
+
+```
+# Add the "appuser" with gid 1000 &&
+# Add the "appuser" with uid 1000, gid 1000
+RUN addgroup -g 1000 -S appuser && \
+    adduser -u 1000 -S appuser -G appuser
+```
