@@ -1,9 +1,9 @@
-# uilicious/alpine-base
+# uilicious/alpine-openjdk
 
-https://hub.docker.com/r/uilicious/alpine-base/
-https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-base
+https://hub.docker.com/r/uilicious/alpine-openjdk/
+https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-openjdk
 
-Base alpine container, normalised to conform to our requirements 
+Base alpine container (With openjdk8 preinstalled), normalised to conform to our requirements 
 as outlined inside the [base/README](https://github.com/uilicious/uilicious-dockerfile/tree/master/base).
 
 ## Standard environment variables
