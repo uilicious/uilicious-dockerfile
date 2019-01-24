@@ -1,7 +1,7 @@
 # uilicious/alpine-plus
 
-https://hub.docker.com/r/uilicious/alpine-plus/
-https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-plus
++ https://hub.docker.com/r/uilicious/alpine-plus/
++ https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-plus
 
 Base alpine container (with node 8 & openjdk 8 preinstalled), normalised to conform to our requirements 
 as outlined inside the [base/README](https://github.com/uilicious/uilicious-dockerfile/tree/master/base).

@@ -1,7 +1,7 @@
 # uilicious/alpine-base
 
-https://hub.docker.com/r/uilicious/alpine-base/
-https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-base
++ https://hub.docker.com/r/uilicious/alpine-base/
++ https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-base
 
 Base alpine container, normalised to conform to our requirements 
 as outlined inside the [base/README](https://github.com/uilicious/uilicious-dockerfile/tree/master/base).
