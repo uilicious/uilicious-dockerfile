@@ -37,7 +37,7 @@ This comes preincluded with `/entrypoint/base.sh` to support the environment var
 
 Knowledge of this folder is only needed for those looking into maintaining these Dockerfile's / extending them.
 
-# Standard `/appspace` folder
+# Standard `/application` folder
 
 This generally represents the container specific custom application space. Which does not require persistent storage.
 
@@ -50,21 +50,14 @@ This is also normally the docker `WORKDIR`, or the starting folder if you were t
 
 This generally represents the persistant storage folder.
 
+Also as a guidline, custom configuration folders should be defined in `/storage/config/`
+
 This directory is all that is needed for file backups. Simplifying the process for many deployment scenerios.
 Mount, schedule backups, and be done with it.
 
 However for certain repositories it might be more "complicated". Check the README of those image for more details.
 
 Actual usage will be image specific
-
-# Standard /appspace folder
-By default this is a symbolic link to `/workspace`.
-However its meant for the application specific folder space.
-
-Which maybe changed / updated / upgraded over various versions. If the application have a `/var/app-installation` 
-`/appspace` will be a symbolic link to `/var/app-installation`.
-
-Actual usage will be image specific.
 
 ---
 
