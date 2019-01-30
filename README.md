@@ -36,6 +36,7 @@ of all my SysAdmin / DevOps docker experiences. Refined for multiple use cases.
 	+ instead document the respective volume directory mount points in its README.md
 	+ also : with known usage patterns of kubernetes / rancher / etc - the `VOL` directive has no known use case other then documentation
 	+ for bug details : https://github.com/moby/moby/issues/12779
+	+ and : https://stackoverflow.com/questions/26145351/why-doesnt-chown-work-in-dockerfile
 
 ---
 
