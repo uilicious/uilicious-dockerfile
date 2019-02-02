@@ -1,3 +1,8 @@
+#
+# Provides simple HTTP to HTTPS redirect
+#
+# VERSION               2.0.1
+#
 FROM nginx:alpine
 
 #
