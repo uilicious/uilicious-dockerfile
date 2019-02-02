@@ -1,7 +1,7 @@
 # uilicious/haveged
 
-https://hub.docker.com/r/uilicious/haveged/
-https://github.com/uilicious/uilicious-dockerfile/tree/master/utility/haveged
++ https://hub.docker.com/r/uilicious/haveged/
++ https://github.com/uilicious/uilicious-dockerfile/tree/master/utility/haveged
 
 # Requires "Privileged" docker access
 

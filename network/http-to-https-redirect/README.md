@@ -1,7 +1,7 @@
 # uilicious/http-to-https-redirect
 
-https://hub.docker.com/r/uilicious/http-to-https-redirect/
-https://github.com/uilicious/uilicious-dockerfile/tree/master/network/http-to-https-redirect
++ https://hub.docker.com/r/uilicious/http-to-https-redirect/
++ https://github.com/uilicious/uilicious-dockerfile/tree/master/network/http-to-https-redirect
 
 ## Summary and configuration
 A simple nginx server, which redirects all its requests from HTTP to HTTPS. 
