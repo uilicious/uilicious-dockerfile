@@ -1,4 +1,4 @@
-# uilicious/https-redirect
+# uilicious/http-to-https-redirect
 
 https://hub.docker.com/r/uilicious/http-to-https-redirect/
 https://github.com/uilicious/uilicious-dockerfile/tree/master/network/http-to-https-redirect
