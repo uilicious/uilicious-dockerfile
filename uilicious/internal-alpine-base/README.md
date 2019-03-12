@@ -1,4 +1,4 @@
-# uilicious/uilicious-alpine-base
+# uilicious/internal-alpine-base
 
 [not recommended for public usage] 
 
