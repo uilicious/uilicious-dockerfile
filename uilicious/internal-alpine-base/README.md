@@ -1,6 +1,6 @@
 # uilicious/internal-alpine-base
 
-[not recommended for public usage] 
+**warning! : not recommended for public usage**
 
 alpine base container customized for uilicous internal application containers use case.
 
