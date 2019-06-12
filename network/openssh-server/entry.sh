@@ -8,6 +8,9 @@ then
 	exit 1
 fi
 
+# Setting up ssh-keygen
+ssh-keygen -A
+
 # Setup the user and pass
 echo "$SSH_USER:$SSH_PASS" | chpasswd
 
