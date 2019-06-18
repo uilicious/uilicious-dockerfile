@@ -40,4 +40,4 @@ RUN chmod 555 /entrypoint/base.sh
 
 # Setup entrypoint script, with default "sleep"
 ENTRYPOINT ["/entrypoint/base.sh"]
-CMD [ "/bin/sh", "--", 'while true; do sleep 10; done;' ]
+CMD [ "/bin/bash", "--", 'while true; do sleep 10; done;' ]
