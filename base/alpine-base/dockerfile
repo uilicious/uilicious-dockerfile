@@ -37,4 +37,7 @@ WORKDIR /appspace/
 # Script contents : https://github.com/uilicious/uilicious-dockerfile/blob/master/base/alpine-base/entrypoint-base.sh
 COPY entrypoint-base.sh /entrypoint/base.sh
 RUN chmod 555 /entrypoint/base.sh
+
+# Setup entrypoint script, with default "sleep"
 ENTRYPOINT ["/entrypoint/base.sh"]
+CMD [ "/bin/sh", "--", 'while true; do sleep 10; done;' ]
