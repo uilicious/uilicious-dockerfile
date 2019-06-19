@@ -1,7 +1,7 @@
 # uilicious/alpine-openssh-rsync
 
 + https://hub.docker.com/r/uilicious/alpine-openssh-rsync/
-+ https://github.com/uilicious/uilicious-dockerfile/tree/master/base/alpine-openssh-rsync
++ https://github.com/uilicious/uilicious-dockerfile/tree/master/utility/alpine-openssh-rsync
 
 Base alpine container, with openssh + rsync, normalised to conform to our requirements 
 as outlined inside the [base/README](https://github.com/uilicious/uilicious-dockerfile/tree/master/base).
