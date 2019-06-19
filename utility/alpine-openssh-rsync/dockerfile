@@ -5,4 +5,4 @@
 #
 FROM uilicious/alpine-base
 
-RUN apk add --no-cache openssh rsync sshpass
+RUN apk add --no-cache openssh rsync sshpass scp
