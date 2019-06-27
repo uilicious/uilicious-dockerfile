@@ -8,7 +8,7 @@ FROM alpine:3.8
 #
 # Standard environment variables
 #
-ENV TZ="GMT+08" LANG="C.UTF-8"
+ENV TZ="GMT+08" LANG="en_US.UTF-8" LANGUAGE="en_US.UTF-8"
 
 #
 # Standard "restricted user"
