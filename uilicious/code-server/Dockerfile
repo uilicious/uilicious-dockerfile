@@ -44,5 +44,5 @@ RUN brew install gradle ant
 # Lets install nodejs/npm
 RUN sudo apt-get install -y npm nodejs
 
-# And http-server, uilicious-cli (useful)
+# And http-server (useful for a quick preview / debug)
 RUN sudo npm install -g http-server
