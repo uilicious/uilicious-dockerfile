@@ -17,7 +17,7 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/mast
 ENV PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH \
 	SHELL=/bin/bash
 
-# The following is the official steps on setting hombrew path does not work for this container
+# The following is the official steps on setting hombrew path which does NOT work for this container
 #
 # ```
 # RUN test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv); \
@@ -26,7 +26,7 @@ ENV PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH \
 # 	echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 # ```
 #
-# We even tried this
+# I even tried this
 # ```
 # RUN echo "eval \$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" >> ~/.profile
 # ```
