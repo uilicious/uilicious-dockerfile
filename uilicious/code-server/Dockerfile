@@ -42,7 +42,7 @@ RUN sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb
 RUN brew install gradle ant
 
 # Lets install nodejs/npm
-RUN sudo apt-get install npm nodejs
+RUN sudo apt-get install -y npm nodejs
 
 # And http-server, uilicious-cli (useful)
 RUN sudo npm install -g http-server
