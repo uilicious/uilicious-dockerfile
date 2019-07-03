@@ -3,7 +3,7 @@ FROM codercom/code-server:latest
 
 # Setup build essentials and docker
 RUN sudo apt-get update && \
-	sudo apt-get install -y build-essential curl file git docker software-properties-common
+	sudo apt-get install -y build-essential curl file git docker.io software-properties-common
 
 # Setup various other things
 RUN sudo apt-get update && \
