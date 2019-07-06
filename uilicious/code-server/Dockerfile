@@ -46,3 +46,6 @@ RUN sudo apt-get install -y npm nodejs
 
 # And http-server (useful for a quick preview / debug)
 RUN sudo npm install -g http-server
+
+# Side note: consider mounting `/home/coder/.local/` or `/home/coder/.local/extensions/`
+# as a volume to cache local vscode extensions / etc
