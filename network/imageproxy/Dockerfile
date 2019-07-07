@@ -24,6 +24,9 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /bin/
 COPY --from=builder /go/bin/imageproxy .
 
+# Set workdir to /tmp/
+WORKDIR /tmp/
+
 # Debug checker 
 RUN imageproxy --help || true
 
