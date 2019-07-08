@@ -44,5 +44,5 @@ RUN chmod 555 /entrypoint/namespace.sh
 # Setup entrypoint script, which does the `00-namespace.conf` setup
 ENTRYPOINT ["/entrypoint/namespace.sh"]
 
-# This is set on nginx:alpine
-#CMD ["nginx", "-g", "daemon off;"]
+# Start nginx deamon by default
+CMD nginx -g "daemon off;"
