@@ -10,7 +10,7 @@ fi
 # Lets setup `/etc/nginx/conf.d/00-resolve.conf` (if needed)
 if [ "$SETUP_RESOLVE_CONF" = "1" ] 
 then
-	echo "resolver $NAMESERVER ;"
+	echo "resolver $NAMESERVER ;" > /etc/nginx/conf.d/00-resolve.conf
 fi
 
 # Chain the execution commands
