@@ -39,7 +39,7 @@ RUN mkdir -p /entrypoint/
 
 # Namespace script setup
 COPY namespace.sh /entrypoint/namespace.sh
-RUN chmod 555 /entrypoint/namespace.sh
+RUN chmod 555 /entrypoint/namespace.sh; chmod +x /entrypoint/namespace.sh;
 
 # Setup entrypoint script, which does the `00-namespace.conf` setup
 ENTRYPOINT ["/entrypoint/namespace.sh"]
