@@ -173,6 +173,11 @@ ENV NAMESERVER=""
 #
 ENV SETUP_RESOLVE_CONF="1"
 
+#
+# Resolve config settings (after $NAMESERVER)
+#
+ENV RESOLVE_CONF="valid=5s ipv6=off"
+
 ##########################################################################
 #
 # Container setup
