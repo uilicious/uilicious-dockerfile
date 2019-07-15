@@ -1,18 +1,11 @@
-# uilicious/nginx-public-http-proxy
+# uilicious/squid-public-http-proxy
 
-+ https://hub.docker.com/r/uilicious/nginx-public-http-proxy/
-+ https://github.com/uilicious/uilicious-dockerfile/tree/master/network/nginx-public-http-proxy
++ https://hub.docker.com/r/uilicious/squid-public-http-proxy/
++ https://github.com/uilicious/uilicious-dockerfile/tree/master/network/squid-public-http-proxy
 
 ## Summary and configuration
 
 A public HTTP/HTTPS/FTP_PROXY running on the default 3128.
-
-## DO NOT USE
-
-Due to several implementation issues with the CONNECT / HTTP / HTTPS (various things),
-it is recommended to either use a socks proxy OR a squid based proxy instead.
-
-See: https://hub.docker.com/r/uilicious/squid-public-http-proxy/
 
 ## !!! INSECURE PROXY WARNING !!!
 
