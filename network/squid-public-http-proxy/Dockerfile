@@ -9,6 +9,9 @@ RUN apk add squid;
 # Configure squid
 COPY squid.conf /etc/squid/squid.conf
 
+# Test the config
+RUN squid -k parse
+
 # Proxy port
 EXPOSE 3128
 
