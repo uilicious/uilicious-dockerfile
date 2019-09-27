@@ -1,0 +1,11 @@
+FROM node:10
+
+# Configure for permissive TLS (works around many major connection errors)
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+
+# Install the required package
+RUN npm install -g cbt_tunnels
+
+# Hook it up to the entrpoint / command
+ENTRYPOINT [ "cbt_tunnels" ]
+CMD [ "help" ]
