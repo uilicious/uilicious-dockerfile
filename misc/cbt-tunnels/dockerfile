@@ -4,8 +4,8 @@ FROM node:10
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 # Install the required package
-RUN npm install -g cbt_tunnels
+RUN npm install -g cbt_tunnels@0.9.10
 
 # Hook it up to the entrpoint / command
 ENTRYPOINT [ "cbt_tunnels" ]
-CMD [ "help" ]
+CMD [ "--help" ]
