@@ -94,82 +94,15 @@ ENV NGINX_ROOT_LOCATION_CONFIG ""
 ##########################
 
 #
-# Prepares the entrypoint primer script, and runs it once
+# Prepares the entrypoint primer script
 #
-RUN echo '#!/bin/sh'                                                                                         > /entrypoint/primer.sh && \
-	echo '# Fetch the DNS resolver'                                                                           >> /entrypoint/primer.sh && \
-	echo 'RESOLVER="$DNS"'                                                                                    >> /entrypoint/primer.sh && \
-	echo 'if [ -z "$RESOLVER" ]; then'                                                                        >> /entrypoint/primer.sh && \
-	echo '    RESOLVER=$(cat /etc/resolv.conf | grep "nameserver" | awk "{print \$2}")'                       >> /entrypoint/primer.sh && \
-	echo 'fi'                                                                                                 >> /entrypoint/primer.sh && \
-	echo ''                                                                                                   >> /entrypoint/primer.sh && \
-	echo 'if [ -n "$DNS_VALID_TIMEOUT" ]; then'                                                               >> /entrypoint/primer.sh && \
-	echo '    RESOLVER="$RESOLVER valid=$DNS_VALID_TIMEOUT"'                                                  >> /entrypoint/primer.sh && \
-	echo 'fi'                                                                                                 >> /entrypoint/primer.sh && \
-	echo 'echo "resolver $RESOLVER ;" > /etc/nginx/resolvers.conf'                                            >> /entrypoint/primer.sh && \
-	echo ''                                                                                                   >> /entrypoint/primer.sh && \
-	echo '# Goes into the nginx config folder'                                                                >> /entrypoint/primer.sh && \
-	echo 'cd /etc/nginx/conf.d/'                                                                              >> /entrypoint/primer.sh && \
-	echo ''                                                                                                   >> /entrypoint/primer.sh && \
-	echo '# Setup the server config'                                                                          >> /entrypoint/primer.sh && \
-	echo 'echo "# http level config"                                                         > default.conf'  >> /entrypoint/primer.sh && \
-	echo 'echo "client_max_body_size ${MAX_BODY_SIZE};"                                      >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "# Dynamic IP DNS workaround"                                                 >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "include resolvers.conf;"                                                     >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "upstream forward_backend {"                                                  >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   zone forward_backend_zone ${UPSTREAM_ZONE_SIZE};"                         >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'if [ -n "$FORWARD_UPSTREAM" ]; then'                                                                >> /entrypoint/primer.sh && \
-	echo 'if [[ "${FORWARD_UPSTREAM: -1}" == ";" ]]; then'                                                    >> /entrypoint/primer.sh && \
-	echo 'echo "   ${FORWARD_UPSTREAM}"                                                      >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'else'                                                                                               >> /entrypoint/primer.sh && \
-	echo 'echo "   ${FORWARD_UPSTREAM};"                                                     >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'fi'                                                                                                 >> /entrypoint/primer.sh && \
-	echo 'else'                                                                                               >> /entrypoint/primer.sh && \
-	echo 'echo "   server ${FORWARD_HOST}:${FORWARD_PORT};"                                  >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'fi'                                                                                                 >> /entrypoint/primer.sh && \
-	echo 'echo "}"                                                                           >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "# Custom NGINX http level config (if applicable)"                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "${NGINX_HTTP_CONFIG}"                                                        >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "server {"                                                                    >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   listen 80 default_server;"                                                >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   client_max_body_size ${MAX_BODY_SIZE};"                                   >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   # Proxy next upstream handling (if applicable)"                           >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   ${NGINX_SERVER_CONFIG}"                                                   >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   # Additional Nginx server level config (if applicable)"                   >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   proxy_next_upstream ${PROXY_NEXT_UPSTREAM};"                              >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   location / {"                                                             >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      proxy_pass                    ${FORWARD_PROT}://forward_backend;"      >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      proxy_http_version            1.1;"                                    >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      proxy_connect_timeout         ${PROXY_CONNECT_TIMEOUT};"               >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      proxy_read_timeout            ${PROXY_READ_TIMEOUT};"                  >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      proxy_pass_request_headers    on;"                                     >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      proxy_set_header     X-Forwarded-For \$proxy_add_x_forwarded_for;"     >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      client_max_body_size ${MAX_BODY_SIZE};"                                >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      client_body_buffer_size ${MAX_BUFFER_SIZE};"                           >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo ""                                                                            >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      # Additional Nginx root location level config (if applicable)"         >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "      ${NGINX_ROOT_LOCATION_CONFIG}"                                         >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "   }"                                                                        >> default.conf' >> /entrypoint/primer.sh && \
-	echo 'echo "}"                                                                           >> default.conf' >> /entrypoint/primer.sh && \
-	echo ''                                                                                                   >> /entrypoint/primer.sh && \
-	echo '# Goes back to root folder'                                                                         >> /entrypoint/primer.sh && \
-	echo 'cd /'                                                                                               >> /entrypoint/primer.sh && \
-	echo ''                                                                                                   >> /entrypoint/primer.sh && \
-	echo '# Chain the execution commands'                                                                     >> /entrypoint/primer.sh && \
-	echo 'exec "$@"'                                                                                          >> /entrypoint/primer.sh && \
-	chmod +x /entrypoint/primer.sh && \
-	/entrypoint/primer.sh;
+COPY primer.sh /entrypoint/
+RUN cat /entrypoint/primer.sh && chmod +x /entrypoint/primer.sh
+
+#
+# Run it once
+#
+RUN /entrypoint/primer.sh;
 
 #
 # Useful for debugging

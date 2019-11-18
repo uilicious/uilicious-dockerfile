@@ -4,7 +4,7 @@ https://hub.docker.com/r/uilicious/nginx-http-simple-proxy/
 https://github.com/uilicious/dockerfiles/tree/master/network/nginx-http-simple-proxy
 
 ## Summary and configuration
-A simple nginx server, which proxy another endpoint.
+A simple nginx server, which proxy-s another endpoint.
 
 Environment configuration is as followed in the Dockerfile.
 
