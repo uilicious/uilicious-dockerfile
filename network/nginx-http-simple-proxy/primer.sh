@@ -50,7 +50,7 @@ echo ""                                                                         
 echo "   location / {"                                                             >> default.conf
 echo "      proxy_pass                    ${FORWARD_PROT}://forward_backend;"      >> default.conf
 echo "      proxy_http_version            1.1;"                                    >> default.conf
-echo "      proxy_set_header Connection   \"\""                                    >> default.conf
+echo "      proxy_set_header Connection   ''"                                      >> default.conf
 echo ""                                                                            >> default.conf
 echo "      proxy_connect_timeout         ${PROXY_CONNECT_TIMEOUT};"               >> default.conf
 echo "      proxy_read_timeout            ${PROXY_READ_TIMEOUT};"                  >> default.conf
