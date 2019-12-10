@@ -16,6 +16,9 @@ RUN mkdir /entrypoint;
 #
 ##########################
 
+# Internal flag to enable setup of DNS config
+ENV DNS_SETUP_CONF "1"
+
 # DNS server to use (if configured)
 ENV DNS ""
 
@@ -38,9 +41,9 @@ COPY configure-dns-resolver.sh /entrypoint/
 RUN cat /entrypoint/configure-dns-resolver.sh && chmod +x /entrypoint/configure-dns-resolver.sh
 
 #
-# Init the default resolver
+# Init the default dns-resolver.conf
 #
-RUN echo "resolver 127.0.0.1 ;" > /etc/nginx/dns-resolver.conf
+RUN echo "" > /etc/nginx/dns-resolver.conf
 
 #
 # Change the nginx.conf file to include the dns-resolver
