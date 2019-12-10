@@ -7,7 +7,7 @@ RUN mkdir /application
 
 
 # Ensure node modules are installed again
-RUN	cd /application/
+RUN cd /application/
 RUN cp /usr/share/nginx/html/index.html /application/
 
 
