@@ -6,7 +6,7 @@
 FROM alpine:3.8
 
 # Install open-ssh server
-RUN apk add --no-cache openssh-server rsync openssh
+RUN apk add --no-cache openssh-server rsync openssh unison
 
 # Reconfigure the SSH to accept login as root, with the specified password
 # RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
