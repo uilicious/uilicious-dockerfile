@@ -39,10 +39,13 @@ RUN sudo add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb
 	sudo apt-get update && sudo apt-get install -y adoptopenjdk-8-hotspot
 
 # Lets install gradle / ant
-RUN brew install gradle ant
+RUN sudo apt-get update && sudo apt-get install -y ant gradle
+
+# Do not use the brew install version, as it conflicts with JDK8 installed above
+# RUN brew install gradle ant
 
 # Lets install nodejs/npm
-RUN sudo apt-get install -y npm nodejs
+RUN sudo apt-get update && sudo apt-get install -y npm nodejs
 
 # And http-server (useful for a quick preview / debug)
 RUN sudo npm install -g http-server
