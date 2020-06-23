@@ -16,9 +16,9 @@ See [base/README](https://github.com/uilicious/uilicious-dockerfile/tree/master/
 
 ## Standard predefined folders
 
-+ `/entrypoint` : Docker container entrypoint scripts
-+ `/appspace`   : Container specific application folder, not meant for persistent storage
-+ `/storage `   : Container specific persistant storage folder
++ `/entrypoint`  : Docker container entrypoint scripts
++ `/application` : Container specific application folder, not meant for persistent storage
++ `/storage `    : Container specific persistant storage folder
 
 See [base/README](https://github.com/uilicious/uilicious-dockerfile/tree/master/base) for more details.
 
