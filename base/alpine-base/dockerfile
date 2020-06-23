@@ -28,7 +28,7 @@ RUN apk add --no-cache bash curl wget vim iputils gettext grep
 # Standard folders, and WORKDIR
 #
 RUN mkdir -p /entrypoint/ /application/ /storage/
-WORKDIR /appspace/
+WORKDIR /application/
 
 #
 # Standard entrypoint script setup
