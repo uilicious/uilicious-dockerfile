@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Bash STRICT mode
+set -eo pipefail
+IFS=$'\n\t'
+
 ####################################################################################################
 #
 #  ENV variable configs
@@ -140,11 +144,17 @@ echo "## -----------------------------------------------------------------------
 #
 ####################################################################################################
 
-if [[ -f "$PROJ_COPY_ENV_FILE_PATH" ]]; then
-    echo "## Project ENV file overwrite found at : $PROJ_COPY_ENV_FILE_PATH"
-    cp "$PROJ_COPY_ENV_FILE_PATH" "$STATAMIC_DIR/.env"
-else
-    echo "## [Skipping] Project ENV file overwrite not found at : $PROJ_COPY_ENV_FILE_PATH"
+# Copy env file if present and enabled
+if [[ "$PROJ_COPY_ENV_FILE_ENABLE" == "true" || "$PROJ_COPY_ENV_FILE_ENABLE" == "1" ]]; then
+    cd "$STATAMIC_DIR/"
+
+    if [[ -f "$PROJ_COPY_ENV_FILE_PATH" ]]; then
+        echo "## Project ENV file overwrite found at : $PROJ_COPY_ENV_FILE_PATH"
+        cp "$PROJ_COPY_ENV_FILE_PATH" "$STATAMIC_DIR/.env"
+        chmod 0755 "$STATAMIC_DIR/.env"
+    else
+        echo "## [Skipping] Project ENV file overwrite not found at : $PROJ_COPY_ENV_FILE_PATH"
+    fi
 fi
 
 ####################################################################################################
@@ -159,110 +169,6 @@ if [[ "$PROJ_RUN_COMPOSER_INSTALL" == "true" || "$PROJ_RUN_COMPOSER_INSTALL" == 
     echo "## -------------------------------------------------------------------------------- "
     cd "$STATAMIC_DIR"
     composer install
-fi
-
-####################################################################################################
-#
-#  And some project setup
-#
-####################################################################################################
-
-# Reset the project permission if needed
-if [[ "$PROJ_RESET_STORAGE_PERMISSION" == "true" || "$PROJ_RESET_STORAGE_PERMISSION" == "1" ]]; then
-    echo "## Resetting storage permission at : $PROJ_RESET_STORAGE_PATH"
-    mkdir -p "$PROJ_RESET_STORAGE_PATH"
-    chmod -R 0777 "$PROJ_RESET_STORAGE_PATH"
-    echo "## -------------------------------------------------------------------------------- "
-fi
-
-# Generate a one time APP_KEY, this maybe ok for statamic, but generally you should generate 
-# one on your own, and configure this using APP_KEY
-
-if [[ "$PROJ_SETUP_APP_KEY" == "true" || "$PROJ_SETUP_APP_KEY" == "1" ]]; then
-    if [[ -z "$APP_KEY" ]]; then
-        echo "## PROJ_SETUP_APP_KEY is enabled, setting up the APP_KEY if required"
-        cd "$STATAMIC_DIR"
-
-        if [[ ! -f "$STATAMIC_DIR/.env" ]]; then
-            echo "## Initializing empty '$STATAMIC_DIR/.env' file (it does not exists)"
-
-            # Due to a bug as reported at : https://github.com/laravel/framework/issues/33033
-            # a valid APP_KEY is needed, to reliably generate a new APP_KEY
-            # for obvious reasons, please do not use this APP_KEY (consider it compromised)
-            echo "APP_KEY=" > "$STATAMIC_DIR/.env"
-            php artisan key:generate
-            php artisan config:cache
-        else
-            if [[ -z "$(grep 'APP_KEY\=..*' .env)" ]];then
-
-                if [[ -z "$(grep 'APP_KEY=' .env)" ]];then
-                    echo "## `$STATAMIC_DIR/.env` file exists, but does not have APP_KEY line, appending"
-                    echo "" >> $STATAMIC_DIR/.env
-                    echo "APP_KEY=" >> $STATAMIC_DIR/.env
-                else
-                    echo "## `$STATAMIC_DIR/.env` file exists, but has an empty APP_KEY line, updating line"
-                fi
-                
-                php artisan key:generate
-                php artisan config:cache
-            else 
-                echo "## [Skipping] `$STATAMIC_DIR/.env` file exists, with an APP_KEY line, skipping APP_KEY setup"
-            fi
-        fi
-    else
-        echo "## [Skipping] PROJ_SETUP_APP_KEY is enabled, but APP_KEY env variable is configured"
-    fi
-fi
-
-####################################################################################################
-#
-#  Loading of env file
-#
-####################################################################################################
-
-#
-# For some reason, which I cant seem to figure out why
-# the .env file refuses to load - as such this forcefully load the .env
-# file into the execution environment variable state instead.
-#
-# This was a really frusfrating bug, which I unfortunately could not resolve.
-# Common advice such as reloading the cache has also been done, but does not seem to work.
-# So while not ideal - this is the best I can do.
-#
-# If anyone knows how to fix the .env file not loading issue, please send a pull request.
-#
-cd "$STATAMIC_DIR/"
-if [[ -f "$STATAMIC_DIR/.env" ]]; then
-
-    echo "## -------------------------------------------------------------------------------- "
-    echo "## Loading .env variable file : $STATAMIC_DIR/.env"
-    echo "## -------------------------------------------------------------------------------- "
-
-    # Get the env variable file as an array of key=value pairs
-    # this only extracts out non-comments and pairs with valid values
-    ENV_MULTILINE=($(cat .env | sed 's/#.*//g' | grep '.*\=..*'))
-
-    for ENV_PAIR in "${ENV_MULTILINE[@]}"
-    do
-        # Get the key value as a pair
-        KEY=$(echo "$ENV_PAIR" | cut -d'=' -f 1)
-        # VAL=$(echo "$ENV_PAIR" | cut -d'=' -f 2)
-        
-        echo ">> Processing $ENV_PAIR"
-        echo ">> KEY = $KEY"
-        echo ">> $ KEY_VAL = ${!KEY}"
-
-        # We only apply values only if existing values is empty
-        if [[ -z "${!KEY}" ]]; then
-            # Lets export the value
-            export $ENV_PAIR
-            
-            echo ">> export $ENV_PAIR"
-        fi
-    done
-
-    # Reload the config cache
-    php artisan config:cache
 fi
 
 ####################################################################################################
@@ -297,18 +203,135 @@ fi
 
 ####################################################################################################
 #
-#  Execute chaining and waiting
+#  And some project setup
+#
+####################################################################################################
+
+# Reset the project permission if needed
+if [[ "$PROJ_RESET_PROJ_PERMISSION" == "true" || "$PROJ_RESET_PROJ_PERMISSION" == "1" ]]; then
+    echo "## Resetting project permission at : $STATAMIC_DIR to $PROJ_RESET_PROJ_PERMISSION_LEVEL"
+    chmod -R $PROJ_RESET_PROJ_PERMISSION_LEVEL "$STATAMIC_DIR"
+    chmod -R +x "$STATAMIC_DIR"
+    echo "## -------------------------------------------------------------------------------- "
+fi
+
+# Generate a one time APP_KEY, this maybe ok for statamic, but generally you should generate 
+# one on your own, and configure this using APP_KEY
+if [[ "$PROJ_SETUP_APP_KEY" == "true" || "$PROJ_SETUP_APP_KEY" == "1" ]]; then
+    if [[ -z "$APP_KEY" ]]; then
+        echo "## PROJ_SETUP_APP_KEY is enabled, setting up the APP_KEY if required"
+        cd "$STATAMIC_DIR"
+
+        if [[ ! -f "$STATAMIC_DIR/.env" ]]; then
+            echo "## Initializing empty '$STATAMIC_DIR/.env' file (it does not exists)"
+
+            # Due to a bug as reported at : https://github.com/laravel/framework/issues/33033
+            # a valid APP_KEY is needed, to reliably generate a new APP_KEY
+            # for obvious reasons, please do not use this APP_KEY (consider it compromised)
+            echo "APP_KEY=" > "$STATAMIC_DIR/.env"
+            php artisan key:generate
+            php artisan config:cache
+        else
+            echo "## '$STATAMIC_DIR/.env' file exists, checking for APP_KEY"
+
+            if [[ -z "$(cat $STATAMIC_DIR/.env | grep '^APP_KEY\=..*')" ]];then
+
+                if [[ -z "$(cat $STATAMIC_DIR/.env | grep '^APP_KEY=')" ]];then
+                    echo "## `$STATAMIC_DIR/.env` file exists, but does not have APP_KEY line, appending"
+                    echo "" >> $STATAMIC_DIR/.env
+                    echo "APP_KEY=" >> $STATAMIC_DIR/.env
+                else
+                    echo "## `$STATAMIC_DIR/.env` file exists, but has an empty APP_KEY line, updating line"
+                fi
+                
+                php artisan key:generate
+                php artisan config:cache
+            else 
+                echo "## [Skipping] `$STATAMIC_DIR/.env` file exists, with an APP_KEY line, skipping APP_KEY setup"
+            fi
+        fi
+    else
+        echo "## [Skipping] PROJ_SETUP_APP_KEY is enabled, but APP_KEY env variable is configured"
+    fi
+fi
+
+####################################################################################################
+#
+#  Performing a localhost curl
+#
+####################################################################################################
+
+# Doing a localhost test curl
+echo "## -------------------------------------------------------------------------------- "
+echo "## [Post Server Start] Performing initial localhost curl (kick start any PHP script needed)"
+sleep 5s
+curl -s --head http://localhost:8000/index.php >> /dev/null || true
+
+# Reset the project permission if needed
+if [[ "$PROJ_RESET_PROJ_PERMISSION" == "true" || "$PROJ_RESET_PROJ_PERMISSION" == "1" ]]; then
+    echo "## [Post Server Start] Resetting project permission at : $STATAMIC_DIR to $PROJ_RESET_PROJ_PERMISSION_LEVEL"
+    chmod -R $PROJ_RESET_PROJ_PERMISSION_LEVEL "$STATAMIC_DIR"
+    chmod -R +x "$STATAMIC_DIR"
+
+    php artisan cache:clear
+    php artisan config:cache
+    sleep 5s
+    echo "## -------------------------------------------------------------------------------- "
+fi
+
+####################################################################################################
+#
+#  Execute chaining any additional commands
 #
 ####################################################################################################
 
 # Chain the execution (if any)
 exec "$@"
 
-# Enable STOPSIGNAL (such as ctrl-c) to work as designed
+####################################################################################################
+#
+#  Waiting for server to be ready
+#
+####################################################################################################
+
+# Enable STOPSIGNAL 
+# (such as ctrl-c) to work as designed
 trap '
   trap - INT # restore default INT handler
   kill -s INT "$$"
 ' INT
+
+# HTTP Connectivity Test
+echo "## -------------------------------------------------------------------------------- "
+echo "## [Post Server Start] Performing localhost curl (waiting for it to be ready)"
+
+printf "%s" "[http://localhost:8000/] ."
+until curl -s --head --fail http://localhost:8000/ &> /dev/null; 
+do 
+    printf "%c" "."
+    sleep 2
+done
+echo ""
+echo "[http://localhost:8000/] READY"
+curl -s --head --fail http://localhost:8000/ || true
+
+echo "## -------------------------------------------------------------------------------- "
+echo "## OK - Server should be up and running now"
+echo "##      Note: statamic may take sometime to initialize all the assets"
+echo "##      and you may see 404 / 500 / chmod errors till they are ready"
+echo "## -------------------------------------------------------------------------------- "
+
+####################################################################################################
+#
+#  Waiting for server termination
+#
+####################################################################################################
+
+# Tail the error logs if needed
+if [[ "$PROJ_TAIL_ERROR_LOGS" == "true" || "$PROJ_TAIL_ERROR_LOGS" == "1" ]]; then
+    cd "/var/log"
+    tail -f /var/log/nginx/access.log /var/log/nginx/error.log /var/log/php8/error.log
+fi
 
 # Wait for completion of any execution (such as nginx)
 wait
