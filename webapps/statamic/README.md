@@ -63,6 +63,16 @@ sudo docker run -it \
 | PROJ_TAIL_ERROR_LOGS             | true, false                                   | true                  | If Enabled - At the end of the server startup, tail the various nginx error logs, into the docker container stdout                                                               |
 | PROJ_DOCKER_COMMAND_MODE         | overwrite, chain                              | overwrite             | How docker command arguments should be handled, this is only useful for debugging purposes mostly.                                                                               |
 
+## Docker file structure
+
+`/workspace/statamic/` - Directory for the statamic site
+`/workspace/.env` - to copy and overwrite `/workspace/statamic/.env` if present with `PROJ_OVERWRITE_ENV_FILE_ENABLE` enabled
+
+## [@TODO] Production deployment options
+
+**Pull the GIT repository, on docker startup**
+
+**Extend the docker container with the files**
 
 ## General Disclaimer
 
