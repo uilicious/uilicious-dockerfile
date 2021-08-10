@@ -4,6 +4,8 @@ Prebuilt docker container, adjusted specifically for common statamic deployment 
 
 ## Quick Deployment Patterns
 
+**Running in dev**
+
 
 
 

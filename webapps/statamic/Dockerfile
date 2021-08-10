@@ -82,8 +82,10 @@ ENV PROJ_SOURCE_TYPE="none" \
     PROJ_RESET_PROJ_PERMISSION="true" \ 
     PROJ_RESET_PROJ_PERMISSION_LEVEL="0777" \
     PROJ_RUN_MODE="nginx" \
-    PROJ_SETUP_APP_KEY="false" \
-    PROJ_TAIL_ERROR_LOGS="true"
+    PROJ_AUTOSETUP_ENV_FILE="true" \
+    PROJ_AUTOSETUP_APP_KEY="false" \
+    PROJ_TAIL_ERROR_LOGS="true" \
+    PROJ_DOCKER_COMMAND_MODE="overwrite"
 
 #
 # Example statamic variables, that you need to change / overwrite

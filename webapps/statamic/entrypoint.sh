@@ -6,6 +6,21 @@ IFS=$'\n\t'
 
 ####################################################################################################
 #
+#  Execute the overwriting command if given
+#
+####################################################################################################
+
+# Use the command if given instead, in overwrite mode
+if [[ "$PROJ_DOCKER_COMMAND_MODE" == "overwrite" ]]; then
+    if [ $# -gt 0 ]; then
+        # run the overwrite command
+        exec "$@"
+        exit 0
+    fi
+fi
+
+####################################################################################################
+#
 #  ENV variable configs
 #
 ####################################################################################################
@@ -151,7 +166,7 @@ if [[ "$PROJ_COPY_ENV_FILE_ENABLE" == "true" || "$PROJ_COPY_ENV_FILE_ENABLE" == 
     if [[ -f "$PROJ_COPY_ENV_FILE_PATH" ]]; then
         echo "## Project ENV file overwrite found at : $PROJ_COPY_ENV_FILE_PATH"
         cp "$PROJ_COPY_ENV_FILE_PATH" "$STATAMIC_DIR/.env"
-        chmod 0755 "$STATAMIC_DIR/.env"
+        chmod "$PROJ_RESET_PROJ_PERMISSION_LEVEL" "$STATAMIC_DIR/.env"
     else
         echo "## [Skipping] Project ENV file overwrite not found at : $PROJ_COPY_ENV_FILE_PATH"
     fi
@@ -215,15 +230,35 @@ if [[ "$PROJ_RESET_PROJ_PERMISSION" == "true" || "$PROJ_RESET_PROJ_PERMISSION" =
     echo "## -------------------------------------------------------------------------------- "
 fi
 
+# Setup the .env file, if it does not exist
+if [[ "$PROJ_AUTOSETUP_ENV_FILE" == "true" || "$PROJ_AUTOSETUP_ENV_FILE" == "1" ]]; then
+    echo "## [AUTOSETUP] PROJ_AUTOSETUP_ENV_FILE=$PROJ_AUTOSETUP_ENV_FILE"
+    if [[ ! -f "$STATAMIC_DIR/.env" ]]; then
+        echo "## [AUTOSETUP] Initializing empty '$STATAMIC_DIR/.env' file (it does not exists)"
+
+        echo "## [AUTOSETUP] WARNING: This should only be done for development builds, as APP_DEBUG=true"
+        echo "## [AUTOSETUP]          AKA - Please configure .env for production/server use cases"
+        echo "## [AUTOSETUP]          unless you want your server to be hacked."
+        
+        echo "APP_DEBUG=true" > "$STATAMIC_DIR/.env"
+        echo "APP_KEY=" >> "$STATAMIC_DIR/.env"
+
+        php artisan key:generate
+        php artisan config:cache
+    else
+        echo "## [AUTOSETUP] Skipping '$STATAMIC_DIR/.env' setup, as it already exists"
+    fi
+fi
+
 # Generate a one time APP_KEY, this maybe ok for statamic, but generally you should generate 
 # one on your own, and configure this using APP_KEY
-if [[ "$PROJ_SETUP_APP_KEY" == "true" || "$PROJ_SETUP_APP_KEY" == "1" ]]; then
+if [[ "$PROJ_AUTOSETUP_APP_KEY" == "true" || "$PROJ_AUTOSETUP_APP_KEY" == "1" ]]; then
     if [[ -z "$APP_KEY" ]]; then
-        echo "## PROJ_SETUP_APP_KEY is enabled, setting up the APP_KEY if required"
+        echo "## [AUTOSETUP] PROJ_AUTOSETUP_APP_KEY is enabled, setting up the APP_KEY if required"
         cd "$STATAMIC_DIR"
 
         if [[ ! -f "$STATAMIC_DIR/.env" ]]; then
-            echo "## Initializing empty '$STATAMIC_DIR/.env' file (it does not exists)"
+            echo "## [AUTOSETUP] Initializing empty '$STATAMIC_DIR/.env' file (it does not exists)"
 
             # Due to a bug as reported at : https://github.com/laravel/framework/issues/33033
             # a valid APP_KEY is needed, to reliably generate a new APP_KEY
@@ -232,26 +267,26 @@ if [[ "$PROJ_SETUP_APP_KEY" == "true" || "$PROJ_SETUP_APP_KEY" == "1" ]]; then
             php artisan key:generate
             php artisan config:cache
         else
-            echo "## '$STATAMIC_DIR/.env' file exists, checking for APP_KEY"
+            echo "## [AUTOSETUP] '$STATAMIC_DIR/.env' file exists, checking for APP_KEY"
 
             if [[ -z "$(cat $STATAMIC_DIR/.env | grep '^APP_KEY\=..*')" ]];then
 
                 if [[ -z "$(cat $STATAMIC_DIR/.env | grep '^APP_KEY=')" ]];then
-                    echo "## `$STATAMIC_DIR/.env` file exists, but does not have APP_KEY line, appending"
+                    echo "## [AUTOSETUP] `$STATAMIC_DIR/.env` file exists, but does not have APP_KEY line, appending"
                     echo "" >> $STATAMIC_DIR/.env
                     echo "APP_KEY=" >> $STATAMIC_DIR/.env
                 else
-                    echo "## `$STATAMIC_DIR/.env` file exists, but has an empty APP_KEY line, updating line"
+                    echo "## [AUTOSETUP] `$STATAMIC_DIR/.env` file exists, but has an empty APP_KEY line, updating line"
                 fi
                 
                 php artisan key:generate
                 php artisan config:cache
             else 
-                echo "## [Skipping] `$STATAMIC_DIR/.env` file exists, with an APP_KEY line, skipping APP_KEY setup"
+                echo "## [AUTOSETUP][Skipping] `$STATAMIC_DIR/.env` file exists, with an APP_KEY line, skipping APP_KEY setup"
             fi
         fi
     else
-        echo "## [Skipping] PROJ_SETUP_APP_KEY is enabled, but APP_KEY env variable is configured"
+        echo "## [AUTOSETUP][Skipping] PROJ_AUTOSETUP_APP_KEY is enabled, but APP_KEY env variable is configured"
     fi
 fi
 
