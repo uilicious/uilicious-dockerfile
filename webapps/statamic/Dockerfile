@@ -72,19 +72,62 @@ RUN chmod +x /workspace/entrypoint.sh
 #
 # Project Environment variable configurations
 #
-ENV PROJ_SOURCE_TYPE="none" \
+ENV \
+    #----------------------------------------------------------------------------------------------
+    # Project source code loader settings
+    #----------------------------------------------------------------------------------------------
+    #
+    # Configure the proj source type, this support the following options
+    #
+    # - none : Throws an error if the folder is not setup externally (like docker volumes)
+    # - git  : A git URL to clone the project from
+    # - tar  : A URL to a TAR file
+    # - zip  : A URL to a ZIP file
+    #
+    # Note that for TAR, and ZIP file - do make sure they are not a "folder" inside an archive.
+    # and all assets should directly be at the top level.
+    PROJ_SOURCE_TYPE="none" \
+    # The URL to download the project data from
     PROJ_SOURCE_URL="https://github.com/statamic/starter-kit-starters-creek.git" \
+    # The branch to download the project data from
     PROJ_SOURCE_GIT_BRANCH="master" \
-    PROJ_SOURCE_UPDATES="false" \
+    # If the project was previously initialized, pull updates on startup
+    PROJ_SOURCE_UPDATES="true" \
+    #----------------------------------------------------------------------------------------------
+    # Project initialization settings
+    #----------------------------------------------------------------------------------------------
+    # --
+    # Run the composer install command on startup
     PROJ_RUN_COMPOSER_INSTALL="true" \
-    PROJ_COPY_ENV_FILE_ENABLE="true" \
-    PROJ_COPY_ENV_FILE_PATH="/workspace/.env" \
+    # --
+    # If enabled, copy the `PROJ_OVERWRITE_ENV_FILE_PATH` file 
+    # and overwrite the /workspace/statamic/.env file.
+    # This is useful for overwritting config files via kubernetes
+    PROJ_OVERWRITE_ENV_FILE_ENABLE="true" \
+    # The file path to check for an overwriting .env config file
+    PROJ_OVERWRITE_ENV_FILE_PATH="/workspace/.env" \
+    # --
+    # Reset the project file permissions on startup
+    # this maybe required to resolve common file permission issues
     PROJ_RESET_PROJ_PERMISSION="true" \ 
+    # The permission level to overwrite at
     PROJ_RESET_PROJ_PERMISSION_LEVEL="0777" \
+    # --
+    # Startup the application server using either "nginx" or "artisan"
+    # For production workloads, please only use the "nginx" config.
     PROJ_RUN_MODE="nginx" \
+    # --
+    # Autogenerate the .env file with APP_DEBUG=true, and an APP_KEY if the .env file does not exists
     PROJ_AUTOSETUP_ENV_FILE="true" \
+    # Autogenerate the APP_KEY if it does not exists in either the env variables or .env file
     PROJ_AUTOSETUP_APP_KEY="false" \
+    #----------------------------------------------------------------------------------------------
+    # Docker run / termination behaviour
+    #----------------------------------------------------------------------------------------------
+    # Tail the various access nad error logs into the docker console log
     PROJ_TAIL_ERROR_LOGS="true" \
+    # If additional arguments are passed, overwrite the entry point script in "overwrite" mode
+    # alternatively if you want to perform docker chaining, please use "chain" mode
     PROJ_DOCKER_COMMAND_MODE="overwrite"
 
 #

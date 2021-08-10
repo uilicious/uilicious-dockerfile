@@ -160,15 +160,15 @@ echo "## -----------------------------------------------------------------------
 ####################################################################################################
 
 # Copy env file if present and enabled
-if [[ "$PROJ_COPY_ENV_FILE_ENABLE" == "true" || "$PROJ_COPY_ENV_FILE_ENABLE" == "1" ]]; then
+if [[ "$PROJ_OVERWRITE_ENV_FILE_ENABLE" == "true" || "$PROJ_OVERWRITE_ENV_FILE_ENABLE" == "1" ]]; then
     cd "$STATAMIC_DIR/"
 
-    if [[ -f "$PROJ_COPY_ENV_FILE_PATH" ]]; then
-        echo "## Project ENV file overwrite found at : $PROJ_COPY_ENV_FILE_PATH"
-        cp "$PROJ_COPY_ENV_FILE_PATH" "$STATAMIC_DIR/.env"
+    if [[ -f "$PROJ_OVERWRITE_ENV_FILE_PATH" ]]; then
+        echo "## Project ENV file overwrite found at : $PROJ_OVERWRITE_ENV_FILE_PATH"
+        cp "$PROJ_OVERWRITE_ENV_FILE_PATH" "$STATAMIC_DIR/.env"
         chmod "$PROJ_RESET_PROJ_PERMISSION_LEVEL" "$STATAMIC_DIR/.env"
     else
-        echo "## [Skipping] Project ENV file overwrite not found at : $PROJ_COPY_ENV_FILE_PATH"
+        echo "## [Skipping] Project ENV file overwrite not found at : $PROJ_OVERWRITE_ENV_FILE_PATH"
     fi
 fi
 
