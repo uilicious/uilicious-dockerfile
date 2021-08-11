@@ -77,7 +77,8 @@ ENV \
     # Project source code loader settings
     #----------------------------------------------------------------------------------------------
     #
-    # Configure the proj source type, this support the following options
+    # Configure the proj source type, this support the following options.
+    # And downloads into `/workspace/statamic` folder
     #
     # - none : Throws an error if the folder is not setup externally (like docker volumes)
     # - git  : A git URL to clone the project from
@@ -114,8 +115,8 @@ ENV \
     PROJ_RESET_PROJ_PERMISSION_LEVEL="0777" \
     # --
     # Startup the application server using either "nginx" or "artisan"
-    # For production workloads, please only use the "nginx" config.
-    PROJ_RUN_MODE="nginx" \
+    # For production workloads, please only use the "nginx" mode.
+    PROJ_SERVER_RUN_MODE="nginx" \
     # --
     # Autogenerate the .env file with APP_DEBUG=true, and an APP_KEY if the .env file does not exists
     PROJ_AUTOSETUP_ENV_FILE="true" \

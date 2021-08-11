@@ -193,11 +193,11 @@ fi
 ####################################################################################################
 
 echo "## -------------------------------------------------------------------------------- "
-echo "## Starting the application server with the given PROJ_RUN_MODE : $PROJ_RUN_MODE"
+echo "## Starting the application server with the given PROJ_SERVER_RUN_MODE : $PROJ_SERVER_RUN_MODE"
 echo "## -------------------------------------------------------------------------------- "
 
 # Start the project either through nginx or artisian
-if [[ "$PROJ_RUN_MODE" == "nginx" ]]; then
+if [[ "$PROJ_SERVER_RUN_MODE" == "nginx" ]]; then
 
     # PHP-FPM running on localhost port 9000
     php-fpm -d listen=127.0.0.1:9000 &
@@ -205,14 +205,14 @@ if [[ "$PROJ_RUN_MODE" == "nginx" ]]; then
     # Running the nginx server, in the background (not daemon mode)
     nginx -g "daemon off;" &
 
-elif [[ "$PROJ_RUN_MODE" == "artisan" ]]; then
+elif [[ "$PROJ_SERVER_RUN_MODE" == "artisan" ]]; then
 
     # Run via php artisian
     cd "$STATAMIC_DIR"
     php artisan serve --host="0.0.0.0" --port=8000 &
 
 else
-    echo "## [FATAL] Unable to start, unknown PROJ_RUN_MODE : $PROJ_RUN_MODE"
+    echo "## [FATAL] Unable to start, unknown PROJ_SERVER_RUN_MODE : $PROJ_SERVER_RUN_MODE"
     exit 1
 fi
 
@@ -339,6 +339,8 @@ trap '
 # HTTP Connectivity Test
 echo "## -------------------------------------------------------------------------------- "
 echo "## [Post Server Start] Performing localhost curl (waiting for it to be ready)"
+echo "##                     WARNING: If your .env file is misconfigured, the container"
+echo "##                     will be stuck in this 'waiting for it be ready' state"
 
 printf "%s" "[http://localhost:8000/] ."
 until curl -s --head --fail http://localhost:8000/ &> /dev/null; 
