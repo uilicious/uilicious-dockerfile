@@ -28,7 +28,7 @@ RUN apk add --no-cache \
         php8-gd php8-exif \
         # Other PHP addons, I do not know what they maybe used for specifically \
         # But errors maybe thrown in the installation / setup process otherwise \
-        php8-zlib php8-curl \
+        php8-zip php8-zlib php8-curl \
         php8-mbstring php8-xml php8-bcmath \
         php8-pdo php8-tokenizer php8-xml \
         php8-pcntl php8-phar php8-dom php8-xmlwriter \
