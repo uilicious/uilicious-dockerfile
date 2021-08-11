@@ -234,17 +234,26 @@ fi
 if [[ "$PROJ_AUTOSETUP_ENV_FILE" == "true" || "$PROJ_AUTOSETUP_ENV_FILE" == "1" ]]; then
     echo "## [AUTOSETUP] PROJ_AUTOSETUP_ENV_FILE=$PROJ_AUTOSETUP_ENV_FILE"
     if [[ ! -f "$STATAMIC_DIR/.env" ]]; then
-        echo "## [AUTOSETUP] Initializing empty '$STATAMIC_DIR/.env' file (it does not exists)"
 
-        echo "## [AUTOSETUP] WARNING: This should only be done for development builds, as APP_DEBUG=true"
-        echo "## [AUTOSETUP]          AKA - Please configure .env for production/server use cases"
-        echo "## [AUTOSETUP]          unless you want your server to be hacked."
-        
-        echo "APP_DEBUG=true" > "$STATAMIC_DIR/.env"
-        echo "APP_KEY=" >> "$STATAMIC_DIR/.env"
+        if [[ -z "$APP_DEBUG"  || -z "$APP_KEY" ]]; then
 
-        php artisan key:generate
-        php artisan config:cache
+            echo "## [AUTOSETUP] Initializing empty '$STATAMIC_DIR/.env' file (it does not exists)"
+            echo "## [AUTOSETUP] WARNING: This should only be done for development builds, as APP_DEBUG=true"
+            echo "## [AUTOSETUP]          AKA - Please configure .env for production/server use cases"
+            echo "## [AUTOSETUP]          unless you want your server to be hacked."
+
+            echo "APP_DEBUG=true" > "$STATAMIC_DIR/.env"
+            echo "APP_KEY=" >> "$STATAMIC_DIR/.env"
+
+            php artisan key:generate
+            php artisan config:cache
+
+        else
+
+            echo "## [AUTOSETUP] Skipping '$STATAMIC_DIR/.env' setup"
+            echo "## [AUTOSETUP] as both APP_DEBUG and APP_KEY env variable is configured"
+            
+        fi
     else
         echo "## [AUTOSETUP] Skipping '$STATAMIC_DIR/.env' setup, as it already exists"
     fi
