@@ -65,8 +65,8 @@ sudo docker run -it \
 
 ## Docker file structure
 
-`/workspace/statamic/` - Directory for the statamic site
-`/workspace/.env` - to copy and overwrite `/workspace/statamic/.env` if present with `PROJ_OVERWRITE_ENV_FILE_ENABLE` enabled
+- `/workspace/statamic/` : Directory for the statamic site
+- `/workspace/.env` : to copy and overwrite `/workspace/statamic/.env` if present with `PROJ_OVERWRITE_ENV_FILE_ENABLE` enabled
 
 ## [@TODO] Production deployment options
 
