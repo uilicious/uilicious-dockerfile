@@ -44,6 +44,24 @@ sudo docker run -it \
     uilicious/statamic 
 ```
 
+**With various environment variable flag**
+
+```bash
+#
+# Disables the APP_DEBUG (which defaults to true in this container)
+# And include your site unique app key, and statamic key
+#
+sudo docker run -it \
+    -e PROJ_SOURCE_TYPE="git" \
+    -e PROJ_SOURCE_URL="<your-project-git-URL>" \
+    -e PROJ_SOURCE_GIT_BRANCH="master" \
+    -e APP_DEBUG="false" \
+    -e APP_KEY="<site-unique-appkey>" \
+    -e STATAMIC_LICENSE_KEY="<statamic-unique-key>" \
+    -p 8000:8000 \
+    uilicious/statamic 
+```
+
 ## Docker environment variables
 
 | Docker ENV Variable              | Possible Values                               | Default Value         | Description                                                                                                                                                                      |
@@ -58,7 +76,7 @@ sudo docker run -it \
 | PROJ_RESET_PROJ_PERMISSION       | true, false                                   | true                  | If Enabled - Reset the project files permission, on startup                                                                                                                      |
 | PROJ_RESET_PROJ_PERMISSION_LEVEL | Valid chmod permission values                 | 0777                  | Chmod value to overwrite with on startup                                                                                                                                         |
 | PROJ_SERVER_RUN_MODE             | nginx, artisian                               | nginx                 | Server run mode to use, for production please use only the "nginx" mode                                                                                                          |
-| PROJ_AUTOSETUP_ENV_FILE          | true, false                                   | true                  | If Enabled - Automatically setup the site .env file, if it does not exists (skips if APP_DEBUG, and APP_KEY is configured)                                                       |
+| PROJ_AUTOSETUP_ENV_FILE          | true, false                                   | true                  | If Enabled - Automatically setup the site .env file, if it does not exists (skips if APP_DEBUG, or APP_KEY is configured)                                                       |
 | PROJ_AUTOSETUP_APP_KEY           | true, false                                   | false                 | If Enabled - Generate a new APP_KEY, if its not configured in the .env file (or environment value)                                                                               |
 | PROJ_TAIL_ERROR_LOGS             | true, false                                   | true                  | If Enabled - At the end of the server startup, tail the various nginx error logs, into the docker container stdout                                                               |
 | PROJ_DOCKER_COMMAND_MODE         | overwrite, chain                              | overwrite             | How docker command arguments should be handled, this is only useful for debugging purposes mostly.                                                                               |
