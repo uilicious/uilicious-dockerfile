@@ -49,7 +49,7 @@ function update_statamic_files {
         cd "$STATAMIC_DIR"
         git remote set-url origin "$PROJ_SOURCE_URL"
         git submodule foreach --recursive git reset --hard
-        git pull "$PROJ_SOURCE_URL" .
+        git pull
         git submodule foreach --recursive git reset --hard
 
     elif [[ "$PROJ_SOURCE_TYPE" == "tar" ]]; then
