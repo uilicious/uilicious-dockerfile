@@ -141,7 +141,9 @@ Note: This does not pull any updates from the git repository automatically, you 
 
 ## I want to build my own container (not extend this container)
 
-What your looking for probably is the list of dependencies you would need to get things up and running (without 3 whole days of trial and error), the following is what we used on alpine to make this work for most use cases (im guessing?)
+The way the entrypoint script works is highly oppinionated, and has been adjusted for my personal use case - so i understand if you would like to do it differently.
+
+What your looking for probably is the list of dependencies you would need to get things up and running (without 3 whole days of trial and error), so the following is what we used on alpine to make this work for most use cases, and what you can base your builds on.
 
 ```docker
 FROM alpine:3.14
