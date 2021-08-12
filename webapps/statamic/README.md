@@ -2,6 +2,9 @@
 
 Prebuilt docker container, adjusted specifically for common statamic deployment use cases, with control panel.
 
+- https://hub.docker.com/repository/docker/uilicious/statamic
+- https://github.com/uilicious/uilicious-dockerfile/tree/master/webapps/statamic
+
 ## Quick Dev Deployment Patterns
 
 **Running on local dev**
@@ -132,9 +135,76 @@ sudo docker run -it \
 
 Note: This does not pull any updates from the git repository automatically, you should get your git repository to trigger a "git pull" within the container "/workspace/statamic" folder respectively.
 
-**Extend the docker container with the files**
+**Extend the docker container with your files**
 
 @TODO
+
+## I want to build my own container (not extend this container)
+
+What your looking for probably is the list of dependencies you would need to get things up and running (without 3 whole days of trial and error), the following is what we used on alpine to make this work for most use cases (im guessing?)
+
+```docker
+FROM alpine:3.14
+
+#
+# Add some required PHP "addons"
+#
+# and other addons required by statamic
+# along with a nginx server.
+#
+RUN apk add --no-cache \
+        # Install php, and nginx \
+        php8 php8-cli php8-common php8-fpm nginx \
+        # Install dependency library for opcache \
+        pcre-dev \
+        # Utilities used to download / unzip files \
+        unzip wget curl \
+        # Image GD support (required for uploading images)
+        freetype-dev libjpeg-turbo-dev libpng-dev gd \
+        # Git command support \
+        git openssh \
+        # Bash, because its easier for me to write entryscripts for =D \
+        # Vim, is because its my prefer editor to debug things =X \
+        bash vim \
+        # PHP opcache optimization
+        php8-opcache \
+        # PHP mysql extension \
+        php8-mysqli \
+        # PHP GD image manipulation support
+        php8-gd php8-exif \
+        # Required to be able to pull updates (download)
+        php8-zip php8-zlib php8-curl \
+        # Other PHP addons, I do not know what they maybe used for specifically \
+        # But errors maybe thrown in the installation / setup process otherwise \
+        php8-mbstring php8-xml php8-bcmath \
+        php8-pdo php8-tokenizer php8-xml \
+        php8-pcntl php8-phar php8-dom php8-xmlwriter \
+        php8-fileinfo php8-session
+
+# Create the symlink for php to php8 (as alpine does not support this)
+RUN ln -s $(which php8) /usr/bin/php && \
+    ln -s $(which php-fpm8) /usr/bin/php-fpm
+
+# In addition we need to run the relevent docker-php-ext install
+# NOTE: Due to the current issue of PHP8 official container, and some of the extensions listed here
+#       we are depending on the alpine packages instead.
+#
+# RUN docker-php-ext-install \
+#         opcache zlib curl mbstring xml bcmath gd mysqli pdo pdo_mysql tokenizer xml pcntl
+
+#
+# Install PHP composer
+# Version and SHA can be found here : https://getcomposer.org/download/
+#
+ENV COMPOSER_VERSION 2.1.5
+ENV COMPOSER_CHECKSUM be95557cc36eeb82da0f4340a469bad56b57f742d2891892dcb2f8b0179790ec
+RUN wget -q https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar && \
+    echo "$COMPOSER_CHECKSUM  composer.phar" | sha256sum -c - && \
+    mv composer.phar /usr/bin/composer && \
+    chmod +x /usr/bin/composer
+```
+
+You can find the above inside our dockerfile, and if we have a module missing for a use case - just let me know in a pull request, and i will add it.
 
 ## General Disclaimer
 
