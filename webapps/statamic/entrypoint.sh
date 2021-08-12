@@ -380,4 +380,26 @@ if [[ "$PROJ_TAIL_ERROR_LOGS" == "true" || "$PROJ_TAIL_ERROR_LOGS" == "1" ]]; th
 fi
 
 # Wait for completion of any execution (such as nginx)
-wait
+if [[ "$PROJ_PERODIC_UPDATES" == "true" || "$PROJ_PERODIC_UPDATES" == "1" ]]; then
+    # Overwrite auto to the respective use case
+    if [[ "$PROJ_PERODIC_UPDATE_INTERVAL" == "auto" ]]; then
+        if [[ "$PROJ_SOURCE_TYPE" == "git" ]]; then
+            PROJ_PERODIC_UPDATE_INTERVAL="5m"
+        else
+            PROJ_PERODIC_UPDATE_INTERVAL="12h"
+        fi
+    fi
+
+    # Does the required sleep interval in a loop
+    # until a termination is done
+    while true
+    do
+        sleep "$PROJ_PERODIC_UPDATE_INTERVAL"
+        echo "## [PerodicUpdate] Pulling $PROJ_SOURCE_URL for new changes"
+        update_statamic_files
+    done
+else
+    # No perodic pulls are requied, just wait
+    wait
+fi
+

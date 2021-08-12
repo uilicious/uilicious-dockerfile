@@ -96,6 +96,23 @@ ENV \
     # If the project was previously initialized, pull updates on startup
     PROJ_SOURCE_UPDATES="true" \
     #----------------------------------------------------------------------------------------------
+    # Project auto update settings
+    #----------------------------------------------------------------------------------------------
+    # Perodically pull for updates, for git/tar/zip deployments
+    PROJ_PERODIC_UPDATES="false" \ 
+    # Update interval 
+    #
+    # Specificy this in linux sleep intervals such as '30s', '5m', '24h' 
+    # for seconds, minutes or hours respectively.
+    #
+    # "auto" defaults this to '5m' for git repository. and '12h' for tar/zip
+    # this is because git pulls are generally bandwidth efficent. While tar/zip
+    # download may cause unneccesary burden on your server bandwidth if done frequently.
+    #
+    # It is strongly recommended NOT to use this feature for tar/zip. 
+    # And trigger the required updates by redeploying the container through CI/CD when possible
+    PROJ_PERODIC_UPDATE_INTERVAL="auto" \
+    #----------------------------------------------------------------------------------------------
     # Project initialization settings
     #----------------------------------------------------------------------------------------------
     # --
