@@ -86,12 +86,56 @@ sudo docker run -it \
 - `/workspace/statamic/` : Directory for the statamic site
 - `/workspace/.env` : to copy and overwrite `/workspace/statamic/.env` if present with `PROJ_OVERWRITE_ENV_FILE_ENABLE` enabled
 
-## [@TODO] Production deployment options
+## Production deployment options
 
-**Pull the GIT repository, on docker startup**
+**Note: Enabling HTTPS behind a proxy**
+
+It is common for a kubernetes / docker cluster setup to have a HTTPS-to-HTTP reverse proxy before the application container.
+To configure the statamic site to properlly give URL links in HTTPS you should add the following to your statamic site `routes/web.php`
+
+```php
+// ----------------------------------------------------
+// Adding HTTPS schema / proxy url overwrite options
+//
+// Modified from: https://cylab.be/blog/122/using-https-over-a-reverse-proxy-in-laravel
+// ----------------------------------------------------
+$app_url = config("app.url");
+if (!empty($app_url)) {
+    // URL::forceRootUrl($app_url);
+    $schema = explode(':', $app_url)[0];
+    URL::forceScheme($schema);
+}
+// ----------------------------------------------------
+```
+
+Once done, make sure to configure the env variables required for `APP_URL` and `ASSET_URL `to include the `https://` prefix
+
+**Pull the GIT repository, on docker startup, push GIT changes on editor updates**
+
+The following would get a statamic server up and running, which will automatically push any changes back into the repository.
+
+```
+sudo docker run -it \
+    -e PROJ_SOURCE_TYPE="git" \
+    -e PROJ_SOURCE_URL="<your-project-git-URL>" \
+    -e PROJ_SOURCE_GIT_BRANCH="<git-branch>" \
+    -e APP_DEBUG="false" \
+    -e APP_KEY="<site-unique-appkey>" \
+    -e STATAMIC_LICENSE_KEY="<statamic-license-key>" \
+    -e STATAMIC_GIT_ENABLED="true" \
+    -e STATAMIC_GIT_PUSH="true" \
+    -e APP_URL="https://<site-url>" \
+    -e ASSET_URL="https://<site-url>" \
+    -p 8000:8000 \
+    uilicious/statamic 
+```
+
+Note: This does not pull any updates from the git repository automatically, you should get your git repository to trigger a "git pull" within the container "/workspace/statamic" folder respectively.
 
 **Extend the docker container with the files**
 
+@TODO
+
 ## General Disclaimer
 
-In event that an official statamic docker container is released and maintain, it is highly recommended to validate your use case against the official container (instead of this container) as we have no long term plans to maintain this container on a regular basis, or anything beyond our use cases. This is opensourced for refrence for you to either extend or build your own container. YMMV.
+In event that an official statamic docker container is released and maintained, it is highly recommended to validate your use case against the official container (instead of this container) as we have no long term plans to maintain this container on a regular basis, or anything beyond our use cases. This is opensourced for refrence for you to either extend or build your own container. YMMV.
