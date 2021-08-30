@@ -1,5 +1,5 @@
 #
-# Gluster v3.13
+# Gluster v7.x
 #
 # We intentionally use ubuntu, over debian or alpine (our default)
 # due to the better officially maintained PPA repositories, and the overcomplicated
@@ -8,9 +8,7 @@
 # Frankly given the current lack of official suppport in docker / debian
 # and out lack of centos expertise - this was considered the best compromise
 #
-# Ubuntu PPA: https://launchpad.net/~gluster/+archive/ubuntu/glusterfs-3.13
-#
-# Note: Gluster 3.13 is supported only up to ubuntu 18.04 bionic
+# Ubuntu PPA: https://launchpad.net/~gluster/+archive/ubuntu/glusterfs-7
 #
 FROM ubuntu:bionic
 MAINTAINER Eugene Cheah <eugene@uilicious.com>
@@ -18,9 +16,9 @@ MAINTAINER Eugene Cheah <eugene@uilicious.com>
 # Install Gluster with fixed versioning
 RUN apt-get update && \
     apt-get install -y xtail software-properties-common && \
-    add-apt-repository ppa:gluster/glusterfs-3.13 && \
+    add-apt-repository ppa:gluster/glusterfs-7 && \
     apt-get update && \
-    apt-get install -y glusterfs-server && \
+    apt-get install -y glusterfs-server=7.9\* && \
     rm -rf /var/lib/apt/lists/*
 
 # Console logging mode, user either
