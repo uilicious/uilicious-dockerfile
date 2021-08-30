@@ -12,6 +12,11 @@ docker run -d -P --name $(basename "$PWD") $(basename "$PWD")
 -P : auto publish all ports
 -e : set env key=value pairs
 
+# For folders with version ID, consider the following "projname-version"
+
+docker build -t $(basename $(dirname "$PWD"))-$(basename "$PWD") .
+docker run -it $(basename $(dirname "$PWD"))-$(basename "$PWD")
+
 ## adding listener port
 docker port containername XPortNum
 
