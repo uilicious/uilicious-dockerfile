@@ -26,7 +26,7 @@ to ease debugging of issues on kubernetes terminals (like rancher)
 
 ## Do not forget to upgrade gluster clients (after servers)
 
-Note you probably should switch off any workload, and do a restart after installs
+Note you probably should switch off any client workload, and do a restart after installs
 
 ```
 # Dependencies install steps for ubuntu
