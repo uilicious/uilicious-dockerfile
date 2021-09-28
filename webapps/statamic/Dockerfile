@@ -26,6 +26,8 @@ RUN apk add --no-cache \
         php8-mysqli \
         # PHP GD image manipulation support
         php8-gd php8-exif \
+        # Somehow requried for SVG uploads
+        php8-simplexml \
         # Required to be able to pull updates (download)
         php8-zip php8-zlib php8-curl \
         # Other PHP addons, I do not know what they maybe used for specifically \
