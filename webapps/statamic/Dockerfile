@@ -73,6 +73,12 @@ COPY ./nginx-default.conf /etc/nginx/http.d/default.conf
 RUN chmod +x /workspace/entrypoint.sh
 
 #
+# Increase default PHP upload size limit to 100MB
+#
+COPY ./upload.ini /etc/php8/conf.d/
+COPY ./upload.ini /etc/php8/php-fpm.d/
+
+#
 # Project Environment variable configurations
 #
 ENV \
