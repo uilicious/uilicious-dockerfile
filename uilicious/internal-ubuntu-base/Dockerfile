@@ -21,5 +21,5 @@ FROM node:16-bullseye
 
 # Install script tools
 RUN apt-get update && \
-    apt-get install -y bash gettext curl wget vim iputils jq python make g++ apache-ant && \
+    apt-get install -y bash gettext curl wget vim jq python make g++ && \
     rm -rf /var/lib/apt/lists/*
