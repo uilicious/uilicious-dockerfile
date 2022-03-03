@@ -27,7 +27,7 @@ FROM uilicious/alpine-plus:latest
 ###
 
 # Install script tools
-RUN apk add --no-cache bash gettext curl wget vim iputils
+RUN apk add --no-cache bash gettext curl wget vim iputils jq
 
 # Install ffmpeg
 RUN apk upgrade -U \
