@@ -52,9 +52,9 @@ function update_statamic_files {
             git config --global user.email "$PROJ_GIT_PUSH_EMAIL"
             git config --global user.name "$PROJ_GIT_PUSH_NAME"
 
-            git add -A .
-            git commit -am "$PROJ_GIT_PUSH_MSG"
-            git push origin "$PROJ_SOURCE_GIT_BRANCH"
+            git add -A . || true
+            git commit -am "$PROJ_GIT_PUSH_MSG" || true
+            git push origin "$PROJ_SOURCE_GIT_BRANCH" || true
         fi
 
         # Pull git updates
