@@ -42,14 +42,25 @@ function update_statamic_files {
         # Silently terminate if source type is disabled
         return 0
     elif [[ "$PROJ_SOURCE_TYPE" == "git" ]]; then
+        # Configuring GIT
+        cd "$STATAMIC_DIR"
+        git remote set-url origin "$PROJ_SOURCE_URL"
+
+        # Trigger the push
+        if [[ "$PROJ_GIT_PUSH_BEFORE_PULL" == "true" ]]; then
+            echo "## Pushing git updates from to : $PROJ_SOURCE_URL"
+            git config --global user.email "$PROJ_GIT_PUSH_EMAIL"
+            git config --global user.name "$PROJ_GIT_PUSH_NAME"
+
+            git add -A .
+            git commit -am "$PROJ_GIT_PUSH_MSG"
+            git push origin "$PROJ_SOURCE_GIT_BRANCH"
+        fi
 
         # Pull git updates
         echo "## Pulling git updates from from : $PROJ_SOURCE_URL"
-
-        cd "$STATAMIC_DIR"
-        git remote set-url origin "$PROJ_SOURCE_URL"
         git submodule foreach --recursive git reset --hard
-        git pull
+        git pull origin "$PROJ_SOURCE_GIT_BRANCH"
         git submodule foreach --recursive git reset --hard
 
     elif [[ "$PROJ_SOURCE_TYPE" == "tar" ]]; then

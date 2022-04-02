@@ -121,6 +121,15 @@ ENV \
     # And trigger the required updates by redeploying the container through CI/CD when possible
     PROJ_PERODIC_UPDATE_INTERVAL="auto" \
     #----------------------------------------------------------------------------------------------
+    # Perodic push updates, only works with GIT
+    #----------------------------------------------------------------------------------------------
+    # Perodically push before pull
+    PROJ_GIT_PUSH_BEFORE_PULL="true" \ 
+    # Git commit email / user
+    PROJ_GIT_PUSH_EMAIL="devops@uilicious.com" \
+    PROJ_GIT_PUSH_NAME="statamic docker bot" \
+    PROJ_GIT_PUSH_MSG="[automated] perodic commit and push" \
+    #----------------------------------------------------------------------------------------------
     # Project initialization settings
     #----------------------------------------------------------------------------------------------
     # --
