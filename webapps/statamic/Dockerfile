@@ -128,7 +128,7 @@ ENV \
     # Git commit email / user
     PROJ_GIT_PUSH_EMAIL="devops@uilicious.com" \
     PROJ_GIT_PUSH_NAME="statamic docker bot" \
-    PROJ_GIT_PUSH_MSG="[automated] perodic commit and push" \
+    PROJ_GIT_PUSH_MSG="[automated] periodic commit and push" \
     #----------------------------------------------------------------------------------------------
     # Project initialization settings
     #----------------------------------------------------------------------------------------------
