@@ -59,9 +59,9 @@ function update_statamic_files {
 
         # Pull git updates
         echo "## Pulling git updates from from : $PROJ_SOURCE_URL"
-        git submodule foreach --recursive git reset --hard
-        git pull origin "$PROJ_SOURCE_GIT_BRANCH"
-        git submodule foreach --recursive git reset --hard
+        git submodule foreach --recursive git reset --hard || true
+        git pull origin "$PROJ_SOURCE_GIT_BRANCH" || true
+        git submodule foreach --recursive git reset --hard || true
 
     elif [[ "$PROJ_SOURCE_TYPE" == "tar" ]]; then
 
@@ -69,7 +69,7 @@ function update_statamic_files {
 
         # Initialize and directly download and untar
         mkdir -p "$STATAMIC_DIR"
-        curl --show-error --location "$PROJ_SOURCE_URL" | tar -xf - -C "$STATAMIC_DIR"
+        $(curl --show-error --location "$PROJ_SOURCE_URL" | tar -xf - -C "$STATAMIC_DIR") || true
 
     elif [[ "$PROJ_SOURCE_TYPE" == "zip" ]]; then
 
@@ -87,8 +87,8 @@ function update_statamic_files {
         cd /tmp/statamic-downloader
 
         # Download and unpack into the destination folder
-        wget -O package.zip "$PROJ_SOURCE_URL"
-        unzip -d "$STATAMIC_DIR" package.zip 
+        wget -O package.zip "$PROJ_SOURCE_URL" || true
+        unzip -d "$STATAMIC_DIR" package.zip || true
         
         # Reset the tmp folder
         rm -rf "/tmp/statamic-downloader/"
