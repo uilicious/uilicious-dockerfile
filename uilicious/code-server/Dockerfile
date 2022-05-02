@@ -1,5 +1,5 @@
 # @TODO - consider a "STABLE" tag once its out
-FROM codercom/code-server:3.8.0
+FROM codercom/code-server:4.3.0
 
 # Setup build essentials and docker
 RUN sudo apt-get update && \
