@@ -262,7 +262,7 @@ if [[ "$PROJ_AUTOSETUP_ENV_FILE" == "true" || "$PROJ_AUTOSETUP_ENV_FILE" == "1" 
             echo "APP_KEY=" >> "$STATAMIC_DIR/.env"
 
             php artisan key:generate
-            php artisan config:cache
+            # php artisan config:cache
 
         fi
     else
@@ -285,7 +285,7 @@ if [[ "$PROJ_AUTOSETUP_APP_KEY" == "true" || "$PROJ_AUTOSETUP_APP_KEY" == "1" ]]
             # for obvious reasons, please do not use this APP_KEY (consider it compromised)
             echo "APP_KEY=" > "$STATAMIC_DIR/.env"
             php artisan key:generate
-            php artisan config:cache
+            # php artisan config:cache
         else
             echo "## [AUTOSETUP] '$STATAMIC_DIR/.env' file exists, checking for APP_KEY"
 
@@ -300,7 +300,7 @@ if [[ "$PROJ_AUTOSETUP_APP_KEY" == "true" || "$PROJ_AUTOSETUP_APP_KEY" == "1" ]]
                 fi
                 
                 php artisan key:generate
-                php artisan config:cache
+                # php artisan config:cache
             else 
                 echo "## [AUTOSETUP][Skipping] `$STATAMIC_DIR/.env` file exists, with an APP_KEY line, skipping APP_KEY setup"
             fi
@@ -329,7 +329,7 @@ if [[ "$PROJ_RESET_PROJ_PERMISSION" == "true" || "$PROJ_RESET_PROJ_PERMISSION" =
     chmod -R +x "$STATAMIC_DIR"
 
     php artisan cache:clear
-    php artisan config:cache
+    # php artisan config:cache
     sleep 5s
     echo "## -------------------------------------------------------------------------------- "
 fi
