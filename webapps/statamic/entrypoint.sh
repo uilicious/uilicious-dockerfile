@@ -387,7 +387,7 @@ echo "## -----------------------------------------------------------------------
 if [[ "$PROJ_TAIL_ERROR_LOGS" == "true" || "$PROJ_TAIL_ERROR_LOGS" == "1" ]]; then
     # Tail the error logs if needed
     cd "/var/log"
-    $( tail -f /var/log/nginx/access.log /var/log/nginx/error.log /var/log/php8/error.log )&
+    tail -f /var/log/nginx/access.log /var/log/nginx/error.log /var/log/php8/error.log &
 fi
 
 # Wait for completion of any execution (such as nginx)
