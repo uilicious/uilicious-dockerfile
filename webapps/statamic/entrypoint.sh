@@ -48,6 +48,13 @@ function update_statamic_files {
 
         # Trigger the push
         if [[ "$PROJ_GIT_PUSH_BEFORE_PULL" == "true" ]]; then
+            # Reset the project permission if needed
+            if [[ "$PROJ_RESET_PROJ_PERMISSION" == "true" || "$PROJ_RESET_PROJ_PERMISSION" == "1" ]]; then
+                echo "## Resetting (before push) project permission at : $STATAMIC_DIR to $PROJ_RESET_PROJ_PERMISSION_LEVEL"
+                chmod -R $PROJ_RESET_PROJ_PERMISSION_LEVEL "$STATAMIC_DIR"
+                chmod -R +x "$STATAMIC_DIR"
+                echo "## -------------------------------------------------------------------------------- "
+            fi
             echo "## Pushing git updates from to : $PROJ_SOURCE_URL"
             git config --global user.email "$PROJ_GIT_PUSH_EMAIL"
             git config --global user.name "$PROJ_GIT_PUSH_NAME"
