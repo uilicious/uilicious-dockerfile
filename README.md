@@ -24,7 +24,7 @@ of all my SysAdmin / DevOps docker experiences. Refined for multiple use cases.
 + For application servers, Follow the standard environment setup as specified inside (base/README)[https://github.com/picoded/dockerfiles/tree/master/base]
 	+ Or extend from it =]
 
-+ For everthing else priotise according to the following : Offical repo, alpine, busybox, debian, alpine-base, ubuntu-base
++ For everything else priotise according to the following : Offical repo, alpine, busybox, debian, alpine-base, ubuntu-base
 
 + When adding entrypoint scripts, inside the dockerfile link to their respective file directly
 	
