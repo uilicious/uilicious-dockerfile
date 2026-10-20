@@ -5,9 +5,22 @@ These containers normally will not have any useful command on their own, and wil
 
 Most of these will be built on alpine-linux containers, for quick reference of supported repository list : [refer to its official packages list](https://pkgs.alpinelinux.org/packages)
 
-Generally they will have the following.
+---
+
+## 🌟 Modern Alpine 3.20 Base Images (Recommended)
+
+The following purpose-built base images are built on **Alpine Linux 3.20** with modern runtimes, pre-baked dynamic linker compatibility (`libc6-compat`), and standard entrypoint behaviors (`CMD ["/bin/bash"]`):
+
+| Image Name | Directory | Base | Key Packages | Primary Use Cases |
+|---|---|---|---|---|
+| **`uilicious/alpine-jre8-base`** | [`alpine-jre8-base/`](alpine-jre8-base) | `alpine:3.20` | `openjdk8-jre`, `libc6-compat`, `bash`, `curl`, `wget`, `ca-certificates`, `tzdata`, `iputils`, `grep`, `jq` | Production pure Java 8 microservices and API runtimes |
+| **`uilicious/alpine-jdk8-base`** | [`alpine-jdk8-base/`](alpine-jdk8-base) | `alpine:3.20` | `openjdk8` (JDK), `libc6-compat`, `git`, `bash`, `curl`, `wget`, `ca-certificates`, `tzdata`, `iputils`, `grep`, `jq` | Gradle/Maven builders and GitLab CI test runners |
+| **`uilicious/alpine-node20-base`** | [`alpine-node20-base/`](alpine-node20-base) | `alpine:3.20` | `nodejs` (v20 LTS), `npm` (v10), `bash`, `curl`, `wget`, `ca-certificates`, `tzdata`, `iputils`, `grep`, `jq` | Node.js applications, TypeScript builders, engine packaging |
+| **`uilicious/alpine-jre8-node20-base`** | [`alpine-jre8-node20-base/`](alpine-jre8-node20-base) | `alpine-jre8-base` | `nodejs` (v20), `npm` (v10), `python3`, `make`, `g++`, `vim`, `gettext` | Test runner hybrid execution engines requiring Java 8 + Node 20 |
 
 ---
+
+## Legacy Alpine 3.8 Images
 
 # Standard preinstalled packages
 
